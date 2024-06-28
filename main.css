@@ -51,7 +51,7 @@ input, button, .tasks {
 
 .add {
   border: none;
-  background-color: #f44336;
+  background-color: #059e0f;
   color: white;
   padding: 10px;
   border-radius: 6px;
@@ -61,7 +61,7 @@ input, button, .tasks {
 }
 
 .add:hover {
-  background-color: #d32f2f;
+  background-color: #038a0c;
 }
 
 .tasks {
@@ -88,16 +88,24 @@ input, button, .tasks {
 .tasks .task:hover {
   background-color: #f7f7f7;
 }
-.tasks .task.done {
-  opacity: 0.5;
+
+.task-icons {
+  display: flex;
+  gap: 10px;
 }
-.tasks .task span {
-  font-weight: bold;
-  font-size: 12px;
-  background-color: red;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  cursor: pointer;
+@media (max-width: 600px) {
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input, .add {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .task-icons {
+    justify-content: flex-end;
+  }
 }
 
