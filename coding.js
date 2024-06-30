@@ -3,7 +3,7 @@ let submit = document.querySelector(".add");
 let tasksDiv = document.querySelector(".tasks");
 
 let arrayList = [];
-// let currentTaskId = null;
+let currentTaskId = null;
 
 if (localStorage.getItem("tasks")){
     let Data = localStorage.getItem("tasks");
@@ -105,7 +105,7 @@ function addElementToPage() {
           input.value = "";
           submit.value = "Add Task";
           submit.onclick = addTask;
-          // currentTaskId = null;
+          currentTaskId = null;
         }
       } else {
         addTask();
