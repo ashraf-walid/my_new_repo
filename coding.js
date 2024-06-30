@@ -3,6 +3,7 @@ let submit = document.querySelector(".add");
 let tasksDiv = document.querySelector(".tasks");
 
 let arrayList = [];
+// let currentTaskId = null;
 
 if (localStorage.getItem("tasks")){
     let Data = localStorage.getItem("tasks");
@@ -11,37 +12,43 @@ if (localStorage.getItem("tasks")){
 }
 
 function addElementToPage() {
-    tasksDiv.innerHTML = "";
-    arrayList.forEach(function(task) {
-      let div = document.createElement("div");
-      let checkIcon = document.createElement("i");
-      let delIcon = document.createElement("i");
-      let taskText = document.createElement("span");
-  
-      delIcon.className = "fa-solid fa-check deleteBtn";
-      checkIcon.className = "fa-solid fa-pen-to-square editBtn";
-      taskText.textContent = task.title;
-      taskText.className = "task-text";
-  
-      div.className = "task";
-  
-      let iconsDiv = document.createElement("div");
-      iconsDiv.className = "task-icons";
-      iconsDiv.appendChild(checkIcon);
-      iconsDiv.appendChild(delIcon);
-  
-      div.appendChild(taskText);
-      div.appendChild(iconsDiv);
-      div.setAttribute("data-id", task.id);
-      tasksDiv.appendChild(div);
+  tasksDiv.innerHTML = "";
+  arrayList.forEach(function(task) {
+    let div = document.createElement("div");
+    let checkIcon = document.createElement("i");
+    let delIcon = document.createElement("i");
+    let taskText = document.createElement("span");
 
-      // Event listener for edit button
-      checkIcon.addEventListener("click", function() {
+    delIcon.className = "fa-solid fa-check deleteBtn";
+    checkIcon.className = "fa-solid fa-pen-to-square editBtn";
+    taskText.textContent = task.title;
+    taskText.className = "task-text";
+
+    div.className = "task";
+
+    let iconsDiv = document.createElement("div");
+    iconsDiv.className = "task-icons";
+    iconsDiv.appendChild(checkIcon);
+    iconsDiv.appendChild(delIcon);
+
+    div.appendChild(taskText);
+    div.appendChild(iconsDiv);
+    div.setAttribute("data-id", task.id);
+    tasksDiv.appendChild(div);
+
+    // Event listener for edit button
+    checkIcon.addEventListener("click", function() {
       input.value = task.title;
       submit.value = "Update Task";
+      currentTaskId = task.id;
       submit.onclick = function() {
         if (input.value != "") {
-          task.title = input.value;
+          arrayList = arrayList.map(t => {
+            if (t.id === currentTaskId) {
+              t.title = input.value;
+            }
+            return t;
+          });
           localStorage.setItem("tasks", JSON.stringify(arrayList));
           addElementToPage();
           input.value = "";
@@ -50,9 +57,10 @@ function addElementToPage() {
         }
       }
     });
-    });
-    deleteElement();
-  }
+  });
+  deleteElement();
+}
+
   
   function deleteElement() {
     tasksDiv.onclick = function(e) {
@@ -84,7 +92,25 @@ function addElementToPage() {
   
   document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-      addTask();
+      if (submit.value === "Update Task") {
+        if (input.value != "") {
+          arrayList = arrayList.map(t => {
+            if (t.id === currentTaskId) {
+              t.title = input.value;
+            }
+            return t;
+          });
+          localStorage.setItem("tasks", JSON.stringify(arrayList));
+          addElementToPage();
+          input.value = "";
+          submit.value = "Add Task";
+          submit.onclick = addTask;
+          // currentTaskId = null;
+        }
+      } else {
+        addTask();
+      }
     }
   });
+  
   
